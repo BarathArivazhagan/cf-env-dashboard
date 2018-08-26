@@ -3,6 +3,7 @@ import { DataCenterService } from '../../services/data-center.service';
 import { forkJoin } from "rxjs/observable/forkJoin";
 import { ApplicationService } from '../../services/application.service';
 import { UserDefinedServiceInstancesService } from '../../services/user-defined-service-instances.service';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 
 @Component({
@@ -31,28 +32,35 @@ export class DatacenterComponent implements OnInit {
 
   constructor(private dataCenterService: DataCenterService
   , private appsService: ApplicationService,
-   private cupsService: UserDefinedServiceInstancesService) { }
+   private cupsService: UserDefinedServiceInstancesService,
+   private spinnerService: Ng4LoadingSpinnerService ) { }
 
   ngOnInit() {
 
     
-
+    this.spinnerService.show();
     this.appsColumnDefs = [
-        {headerName: 'Name', field: 'name', width: 150},
-        {headerName: 'Org', field: 'org' , width: 100},
-        {headerName: 'Space', field: 'space' , width: 100},
-        {headerName: 'Instances', field: 'instances' , width: 100},
-        {headerName: 'Status', field: 'status', width: 100},
+        {headerName: 'Name', field: 'name', width: 200,
+          cellClass: "cell-wrap-text",  autoHeight: true},
+        {headerName: 'Org', field: 'org' , width: 150,
+        cellClass: "cell-wrap-text",  autoHeight: true},
+        {headerName: 'Space', field: 'space' , width: 150,
+        cellClass: "cell-wrap-text",  autoHeight: true},
+        {headerName: 'Instances', field: 'instances' , width: 150,
+        cellClass: "cell-wrap-text",  autoHeight: true},
+        {headerName: 'Status', field: 'status', width: 150,
+        cellClass: "cell-wrap-text",  autoHeight: true},
         { headerName: 'Actions',
         suppressMenu: true,
         suppressSorting: true,
-        cellRenderer: this.actionCellRenderer,
-        autoWidth: true,
+        cellRenderer: this.actionCellRenderer,        
         autoHeight: true,
-        width: 250
+        width: 375
        },
-       {headerName: 'Memory', field: 'memory', width: 100},
-       {headerName: 'Routes', field: 'routes'},
+       {headerName: 'Memory', field: 'memory', width: 100,
+       cellClass: "cell-wrap-text",  autoHeight: true},
+       {headerName: 'Routes', field: 'routes', width: 150,
+       cellClass: "cell-wrap-text",  autoHeight: true},
     ];
 
     this.servicesColumnDefs = [    
@@ -63,8 +71,7 @@ export class DatacenterComponent implements OnInit {
       { headerName: 'Actions',
       suppressMenu: true,
       suppressSorting: true,
-      cellRenderer: this.serviceActionsCellRenderer,
-      autoWidth: true,
+      cellRenderer: this.serviceActionsCellRenderer,      
       autoHeight: true
     }
   ];
@@ -176,7 +183,7 @@ export class DatacenterComponent implements OnInit {
           });
           console.log('service records',serviceRecords);
           this.servicesRowData = serviceRecords;
-          
+          this.spinnerService.hide();
           }, err => {
             console.log("error in get apps and services");
           });
@@ -187,6 +194,10 @@ export class DatacenterComponent implements OnInit {
     this.appsGridApi = params.api;
     this.appsGridColumnApi = params.columnApi;
     params.api.sizeColumnsToFit();
+    setTimeout(function() {
+      params.api.resetRowHeights();
+    }, 500);
+
   }
 
   onServicesGridReady(params) {
@@ -194,6 +205,9 @@ export class DatacenterComponent implements OnInit {
     this.servicesGridApi = params.api;
     this.servicesGridColumnApi = params.columnApi;
     params.api.sizeColumnsToFit();
+    setTimeout(function() {
+      params.api.resetRowHeights();
+    }, 500);
   }
 
   public actionCellRenderer( params : any): string {

@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: cf-api-client-helper
+
+server:
+  port: 8888
+
+logging:
+  level:
+    org.springframework.web: info
+    org.springframework.security.oauth2: info
+    org.springframework.web.client: debug
+    com.barath.app.cloudfoundry: info
+cf:
+  endpoints:
+    D1: api.run.pivotal.io
+    D2: api.run.pivotal.io
+    D3: api.run.pivotal.io
+    D4: api.run.pivotal.io
+    D5: api.run.pivotal.io
+  organizations:
+    D1:
+    - Barath-Dev
+    D2:
+    - barathpari-dev
+  spaces:
+    Barath-Dev:
+    - development
+    - production
+    - test
+    barathpari-dev:
+    - development
+  username: ${username}
+  password: ${password}
+management:
+  cloudfoundry:
+    enabled: true
+    skip-ssl-validation: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

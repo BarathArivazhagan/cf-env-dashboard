@@ -1,0 +1,32 @@
+
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-2 sidenav ">     
+      <ul class="nav nav-pills nav-stacked">
+        <li><a class="active nav-text" (click)="load('overview')">Overview</a></li>
+        <li><a  class="nav-text" (click)="load('datacenters')">Datacenters</a></li>
+        <li><a  class="nav-text" (click)="load('applications')">Applications</a></li>
+        <li><a class="nav-text" (click)="load('services')"> Services</a></li>
+        <li><a class="nav-text" (click)="load('routes')"> Routes</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-10">
+
+     <ng-container  *ngIf="showOverview">
+            <app-overview ></app-overview>
+          </ng-container>
+      <ng-container  *ngIf="showApps">
+        <app-application ></app-application>
+      </ng-container>
+      <ng-container *ngIf="showDatacenters">
+        <app-datacenter ></app-datacenter>
+      </ng-container>
+      <ng-container *ngIf="showCUPS">
+        <app-user-defined-service ></app-user-defined-service>
+     </ng-container>
+    </div>
+  </div>
+   
+    
+   
+</div>

@@ -1,0 +1,73 @@
+<div class="row datacenter-label">
+
+    <div class="col-sm-6">
+          Datacenter: {{datacenterName}} 
+          <span *ngIf="showOrgSpace">Org:{{orgName}} Space: {{spaceName}} </span>
+    </div>
+    <div class="col-sm-6">
+        <div class="col-sm-4"  style="padding-left: 0px;padding-right: 0px;">
+            <div class="col-sm-1 dropdown-label-align">DC:</div>
+            <div class="col-sm-3">
+              <select class="dropdown-select" (change)="doOnChangeDropdown($event.target.value)">
+                <option value="all"> ALL </option>
+                <option *ngFor="let dc of datacenters" value={{dc}}>
+                    {{dc}}
+                </option>
+              </select>
+            </div>
+            
+        </div>
+        <div class="col-sm-4 " style="padding-left: 0px;padding-right: 0px;">
+            <div class="col-sm-1 dropdown-label-align" style="padding-right: 20px;">ORG:</div>
+            <div class="col-sm-3">
+              <select class="dropdown-select" (change)="doOnChangeDropdown($event.target.value)">
+                <option value="all"> ALL </option>
+                <option *ngFor="let org of orgs" value={{org}}>
+                    {{org}}
+                </option>
+            </select>
+          </div>
+            
+        </div>
+        <div class="col-sm-4" style="padding-left: 0px;padding-right: 0px;">
+            <div class="col-sm-1 dropdown-label-align" style="padding-right: 40px;">SPACE:</div>
+            <div class="col-sm-3"> 
+               <select class="dropdown-select" (change)="doOnChangeDropdown($event.target.value)">
+                <option value="all"> ALL </option>
+                <option *ngFor="let space of spaces" value={{space}}>
+                    {{space}}
+                </option>
+              </select> 
+             </div>         
+        </div>
+    </div>
+</div>
+<div class="row align-height">
+    
+ <div class="align-text-label">Applications</div>
+ <ag-grid-angular 
+    style="width: 100%; height: 400px;"
+    id="appsGrid"    
+    class="ag-theme-balham"
+    [enableSorting]="true"
+    [rowData]="appsRowData" 
+    [columnDefs]="appsColumnDefs"
+    [enableFilter]="true"
+    (gridReady)="onAppsGridReady($event)"
+    >
+</ag-grid-angular>
+</div>
+<div class="row ">
+    <div class="align-text-label">Services</div>
+    <ag-grid-angular 
+    style="width: 100%; height: 400px;"
+    id="servicesGrid"    
+    class="ag-theme-balham"
+    [enableSorting]="true"
+    [rowData]="servicesRowData" 
+    [columnDefs]="servicesColumnDefs"
+    [enableFilter]="true"
+    (gridReady)="onServicesGridReady($event)"
+    >
+</ag-grid-angular>
+</div>

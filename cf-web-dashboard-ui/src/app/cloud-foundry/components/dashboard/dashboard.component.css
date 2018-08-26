@@ -1,0 +1,27 @@
+.row.content {height: 550px}
+    
+
+.sidenav {
+  background-color: #243641;
+  height: 150%;
+  padding-top: 15px;
+}
+
+@media screen and (max-width: 767px) {
+    .row.content {height: auto;} 
+}
+
+.nav-text{
+    color: aliceblue;
+    font-size: 18px;
+}
+
+.nav  a:hover {
+    background-color: #243641;
+    color: wheat;
+}
+
+.nav > li > a:focus {
+    color: #243641;
+    outline: none;}
+

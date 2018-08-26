@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~ag-grid/dist/styles/ag-grid.css";
+@import "~ag-grid/dist/styles/ag-theme-balham.css";
+
+.ag-theme-balham .ag-header-cell{
+    background-color: white;
+}
+
+.ag-theme-balham .ag-header-cell .ag-header-cell-label{ 
+    color: black;
+    font-size: 14px;
+    
+}
+
+.cell-wrap-text {
+    white-space: normal !important;
+}

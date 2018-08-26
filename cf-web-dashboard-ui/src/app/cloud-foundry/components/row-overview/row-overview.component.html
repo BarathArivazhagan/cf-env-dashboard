@@ -1,0 +1,26 @@
+<div *ngFor="let t of temp(math.ceil(datacenters.length/3)).fill(); let i = index" class="row align-top">
+    <div *ngFor="let datacenter of datacenters.slice(3*i,3*i + 3);" class="col-sm-4">
+        <a  (click)="navigateToDatacenter(datacenter.name)">
+            <div class="well well-align">
+              <!-- <pre>{{ datacenter | json }}</pre>  -->
+                <div class="row align-top align-left">
+                  <img class="img-responsive pws-img" src="assets/images/pws.png">
+                  <h3>{{datacenter.name}}</h3>
+                </div>
+                <div class="row align-top">
+                    <div class="col-sm-6"><b>Orgs</b> 
+                      <div *ngFor="let org of datacenter.orgs" > {{org}} </div>
+                    </div> 
+                    <div class="col-sm-6"><b>Spaces </b> 
+                      <div *ngFor="let space of datacenter.spaces">{{space}}</div>             
+                    </div> 
+                  </div>
+                <div class="row align-top">
+                    <div class="col-sm-6"><span ><b>Applications</b></span><span class="span-count">{{datacenter.applications.length}}</span></div>
+                    <div class="col-sm-6"><span><b>Services</b></span><span class="span-count">{{datacenter.services.length}}</span></div> 
+                </div>
+            </div>
+          </a>
+      </div>   
+</div>
+

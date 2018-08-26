@@ -1,0 +1,42 @@
+.align-height{
+    max-height: 500px;
+}
+
+.align-text-label{
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px;
+}
+
+.table-align{
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: 400px;
+}
+
+.align-action-button{
+    width: 75px !important;
+}
+
+.datacenter-label {
+    color: black;
+    text-align: center;
+    background-color: azure;
+    font-weight: bold;
+    font-size: 20px;
+    padding-bottom: 5px;
+}
+
+.dropdown-select{
+    width: 100px;
+    height: 25px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.dropdown-label-align{
+    font-size: 14px;
+    padding-top: 5px;
+}
+

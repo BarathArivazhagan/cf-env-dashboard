@@ -1,0 +1,34 @@
+
+img {
+    float:left;
+}
+h3 {
+    padding-left: 60%;
+}
+
+.a div{
+    color: #243641;
+
+}
+
+.pws-img {
+    width: 20%;
+}
+
+.span-count{
+
+    padding-left: 10px;
+}
+
+.align-left{  
+    padding-left: 10px;
+}
+
+.align-top{
+    padding-top: 10px;
+}
+
+.well-align{
+    background-color: white;
+    border: 1px solid black;
+}

@@ -39,8 +39,10 @@ export class DatacenterComponent implements OnInit {
 
     this.appsColumnDefs = [
         {headerName: 'Name', field: 'name', width: 150},
+        {headerName: 'Org', field: 'org' , width: 100},
+        {headerName: 'Space', field: 'space' , width: 100},
         {headerName: 'Instances', field: 'instances' , width: 100},
-        {headerName: 'Status', field: 'requestedState', width: 100},
+        {headerName: 'Status', field: 'status', width: 100},
         { headerName: 'Actions',
         suppressMenu: true,
         suppressSorting: true,
@@ -49,14 +51,15 @@ export class DatacenterComponent implements OnInit {
         autoHeight: true,
         width: 250
        },
-       {headerName: 'Memory', field: 'memoryLimit', width: 100},
-       {headerName: 'Routes', field: 'urls'},
+       {headerName: 'Memory', field: 'memory', width: 100},
+       {headerName: 'Routes', field: 'routes'},
     ];
 
-    this.servicesColumnDefs = [
-      {headerName: '#', field: 'index' },
+    this.servicesColumnDefs = [    
       {headerName: 'Name', field: 'name' },
-      {headerName: 'Status', field: 'status'},
+      {headerName: 'Type', field: 'type'},
+      {headerName: 'Org', field: 'org' , width: 100},
+      {headerName: 'Space', field: 'space' , width: 100},
       { headerName: 'Actions',
       suppressMenu: true,
       suppressSorting: true,
@@ -69,25 +72,15 @@ export class DatacenterComponent implements OnInit {
     this.datacenterName = this.dataCenterService.getDatacenter();
     console.log('datacenter name',this.datacenterName);
     if(this.datacenterName !=null && this.datacenterName !== undefined && this.datacenterName !== '') {
-      
+      this.view_data_center();
     }
     
+  
 
-    this.appsRowData  = [
-      { index: '1', name: 'Celica', status: 'STARTED' },
-      { index: '2', name: 'Mondeo', status: 'STARTED' },
-      { index: '3', name: 'Boxter', status: 'STARTED' }
-    ];
-
+    if(this.datacenterName !==undefined) {
+      this.populateDropDowns();
+    }
    
-
-    this.servicesRowData  = [
-      { index: '1', name: 'Celica', status: 'STARTED' },
-      { index: '2', name: 'Mondeo', status: 'STARTED' },
-      { index: '3', name: 'Boxter', status: 'STARTED' }
-    ];
-
-    this.populateDropDowns();
   }
 
   public populateDropDowns(): void {
@@ -129,11 +122,65 @@ export class DatacenterComponent implements OnInit {
     forkJoin([ this.appsService.getAppsbyDatacenter(this.datacenterName), this.cupsService.getCupsByDatacenter(this.datacenterName)])
           .subscribe( results => {
             console.log("results",results);
-            let apps = [];
-            this.appsRowData = results[0];
+            let appRecords = [];
+            let serviceRecords = [];
+            const apps = results[0];
+            const keys = Object.keys(apps);
+            keys.forEach( key =>{
+                console.log('org',key);
+                const spaces =apps[key];
+                console.log('spaces',spaces);
+                const spacekeys = Object.keys(spaces);
+                spacekeys.forEach( spaceKey =>{
+
+                  const apps =spaces[spaceKey];
+                  console.log('app summary',apps);
+                  apps.forEach( app => {
+                    appRecords.push({
+                      'name' : app['name'],
+                      'org' : key,
+                      'space': spaceKey,
+                      'instances' :app['instances'] ,
+                      'status' : app['requestedState'],
+                      'memory': app['memoryLimit'],
+                      'routes' : app['urls']
+                    });
+                  });
+                 
+                });
+            });
+            console.log('app records',appRecords);
+            this.appsRowData = appRecords;
+          // service data
+          const services = results[1];
+          const serviceKeys = Object.keys(services);
+          serviceKeys.forEach( serviceKey =>{
+              console.log('org',serviceKey);
+              const serviceSpaces =services[serviceKey];
+              console.log('spaces',serviceSpaces);
+              const spaceServiceKeys = Object.keys(serviceSpaces);
+              spaceServiceKeys.forEach( spaceServiceKey =>{
+
+                const services =serviceSpaces[spaceServiceKey];
+                console.log('service summary',services);
+                services.forEach( service => {
+                  serviceRecords.push({
+                    'name' : service['name'],
+                    'org' : serviceKey,
+                    'space': spaceServiceKey,
+                    'type' : service['type']                   
+                  });
+                });
+               
+              });
+          });
+          console.log('service records',serviceRecords);
+          this.servicesRowData = serviceRecords;
+          
           }, err => {
             console.log("error in get apps and services");
           });
+
   }
 
   onAppsGridReady(params) {
@@ -159,7 +206,7 @@ export class DatacenterComponent implements OnInit {
 
   public serviceActionsCellRenderer(params : any) : string {
     console.log('services action cell rendered invoked with params', params);
-    return '<button type="button" data-action-type="modify" class="btn btn-primary"> Modify </button>';
+    return '<div class="btn-group"><button type="button" data-action-type="view" class="btn btn-success"> View </button><button type="button" data-action-type="modify" class="btn btn-primary"> Modify </button></div>';
   }
 
   public doOnChangeDropdown(value: string) {

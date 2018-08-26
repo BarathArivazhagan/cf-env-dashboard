@@ -6,4 +6,4 @@ const routes: Routes = [
   
 ];
 
-export const AppRoutingModule = RouterModule.forRoot(routes,{ useHash: false,enableTracing: true });
+export const AppRoutingModule = RouterModule.forRoot(routes,{ useHash: false,enableTracing: false });

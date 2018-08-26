@@ -1,2 +1,2 @@
-# cf-env-dashboard
-A simple angular dashboard built to manage applications and services across cloud foundry datacenters
+# cf-web-dashboard
+A simple web angular dashboard built to manage applications and services across cloud foundry datacenters

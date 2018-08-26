@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cf-api-client-helper
+    name: cf-web-dashboard-service
 
 server:
   port: 8888

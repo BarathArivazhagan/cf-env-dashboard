@@ -11,13 +11,12 @@ import { DataCenterService } from '../../services/data-center.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit{
+export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showApps = false;
-  public showDatacenters = false; 
+  public showDatacenters = false;
   public showCUPS = false;
   public showOverview = true;
-  
 
   @ViewChild(ApplicationComponent) apps: ApplicationComponent;
   @ViewChild(DatacenterComponent) datacenters: DatacenterComponent;
@@ -33,7 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit{
     this.activatedRoute.params
           .subscribe( param => {
               console.log('params in activated route ', param);
-              if( param.datacenter) {
+              if ( param.datacenter) {
                   this.datacenterService.setDatacenter(param.datacenter);
                   this.showViewsByName('datacenters');
               }

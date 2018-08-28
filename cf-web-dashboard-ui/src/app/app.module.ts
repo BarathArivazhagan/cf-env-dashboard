@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,  
+    AppRoutingModule,
     CloudFoundryModule,
     HttpClientModule,
     CommonModule,

@@ -1,6 +1,6 @@
 import { environment } from '../../environments/environment';
 
-export class CONSTANTS{
+export class CONSTANTS {
 
     public static SUMMARY_API = environment.serviceUrl.concat('/summary');
     public static GET_APPS_API = environment.serviceUrl.concat('/apps');

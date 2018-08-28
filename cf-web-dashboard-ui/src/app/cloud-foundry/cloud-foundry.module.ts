@@ -21,7 +21,9 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
     CloudFoundryRoutingModule,
     AgGridModule.withComponents([DatacenterComponent]),
   ],
-  declarations: [DashboardComponent, DatacenterComponent, ApplicationComponent, UserDefinedServiceComponent, OverviewComponent, RowOverviewComponent],
+  declarations: [DashboardComponent, DatacenterComponent,
+                 ApplicationComponent, UserDefinedServiceComponent,
+                 OverviewComponent, RowOverviewComponent],
   providers: [ DataCenterService, ApplicationService, UserDefinedServiceInstancesService, DashboardService]
 })
 export class CloudFoundryModule { }

@@ -2,9 +2,10 @@ package com.barath.app.controller;
 
 
 import com.barath.app.cloudfoundry.config.CloudFoundryProperties;
+import com.barath.app.model.Organization;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.invoke.MethodHandles;
@@ -40,16 +41,14 @@ public class HomeController {
 
     @GetMapping(value = "/orgs/{datacenter}")
     public List<String> getOrgsByDatacenter(@PathVariable String datacenter){
-        return this.cloudFoundryProperties.getOrganizations().get(datacenter);
+        return this.cloudFoundryProperties.getOrganizations().get(datacenter).stream().map(Organization::getName).collect(Collectors.toList());
     }
 
     @GetMapping(value = "/spaces/{datacenter}")
     public List<String> getSpaces(@PathVariable String datacenter){
-        List<String> orgs =this.cloudFoundryProperties.getOrganizations().get(datacenter);
+        List<Organization> orgs =this.cloudFoundryProperties.getOrganizations().get(datacenter);
 
-        return orgs.stream().flatMap( org1 -> {
-        return this.cloudFoundryProperties.getSpaces().get(org1).stream();
-        }).collect(Collectors.toList());
+        return orgs.stream().map(Organization::getSpaces).flatMap(List::stream).collect(Collectors.toList());
     }
 
 }

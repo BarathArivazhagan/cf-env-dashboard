@@ -29,17 +29,16 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit{
 
   ngOnInit() {
 
-    console.log('route info',this.activatedRoute);
+    console.log('route info', this.activatedRoute);
     this.activatedRoute.params
           .subscribe( param => {
-              console.log('params in activated route ',param);
-              if(param.datacenter){
-                  this.datacenterService.setDatacenter(param.datacenter);                
-                  this.showViewsByName('datacenters');                 
+              console.log('params in activated route ', param);
+              if( param.datacenter) {
+                  this.datacenterService.setDatacenter(param.datacenter);
+                  this.showViewsByName('datacenters');
               }
 
           });
-  
   }
 
   ngOnDestroy() {
@@ -51,17 +50,17 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
 
-  public load( viewName : string): void{
+  public load( viewName: string): void {
 
-    console.log('load view name ',viewName);
+    console.log('load view name ', viewName);
     this.showViewsByName(viewName);
   }
 
 
-  public showViewsByName( viewName : string) : void {
+  public showViewsByName( viewName: string): void {
 
-    switch( viewName) {
-       
+    switch (viewName) {
+
       case 'datacenters' : this.showApps = false;
                             this.showCUPS = false;
                             this.showOverview = false;
@@ -86,14 +85,13 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit{
                 this.showCUPS = false;
                 this.showDatacenters = false;
                 this.showOverview = true;
-                
 
     }
 
   }
 
   ngAfterViewInit() {
-  
+
   }
 
 

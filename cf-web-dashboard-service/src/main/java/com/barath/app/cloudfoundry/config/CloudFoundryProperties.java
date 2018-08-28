@@ -3,6 +3,9 @@ package com.barath.app.cloudfoundry.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
+
+import com.barath.app.model.Organization;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
@@ -14,12 +17,12 @@ import java.util.Map;
 @ConfigurationProperties(ignoreUnknownFields=true,prefix="cf")
 public class CloudFoundryProperties implements Serializable {
 
-    private Map<String,String> endpoints;
+	private static final long serialVersionUID = 1L;
 
-    private Map<String, List<String>> organizations;
+	private Map<String,String> endpoints;
 
-    private Map<String,List<String>> spaces;
-
+    private Map<String, List<Organization>> organizations;
+ 
     private String username;
 
     private String password;
@@ -32,27 +35,19 @@ public class CloudFoundryProperties implements Serializable {
     public void setEndpoints(Map<String, String> endpoints) {
         this.endpoints = endpoints;
     }
+    
+    
 
-    public Map<String, List<String>> getSpaces() {
-        return spaces;
-    }
+   
+    public Map<String, List<Organization>> getOrganizations() {
+		return organizations;
+	}
 
-    public void setSpaces(Map<String, List<String>> spaces) {
-        this.spaces = spaces;
-    }
+	public void setOrganizations(Map<String, List<Organization>> organizations) {
+		this.organizations = organizations;
+	}
 
-
-
-    public Map<String, List<String>> getOrganizations() {
-        return organizations;
-    }
-
-    public void setOrganizations(Map<String, List<String>> organizations) {
-        this.organizations = organizations;
-    }
-
-
-    public String getUsername() {
+	public String getUsername() {
         return username;
     }
 
@@ -70,20 +65,13 @@ public class CloudFoundryProperties implements Serializable {
 
     @PostConstruct
     public void init() {
-
-        endpoints.entrySet()
-                .stream().forEach( entry -> {
-            System.out.println("KEY "+entry.getKey()+" VALUE"+entry.getValue());
-        });
-        spaces.entrySet()
-                .stream().forEach( entry -> {
-            System.out.println("KEY "+entry.getKey()+" VALUE"+entry.getValue());
-        });
-
-        organizations.entrySet()
-                .stream().forEach( entry -> {
-            System.out.println("KEY "+entry.getKey()+" VALUE"+entry.getValue());
-        });
+    	
+      Assert.notNull(this.getEndpoints(), "endpoints targeted cannot be empty");
+      Assert.notNull(this.getOrganizations(), "orgs targeted cannot be empty");
+      
     }
-
+    
+   
 }
+
+

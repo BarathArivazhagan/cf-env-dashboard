@@ -4,6 +4,7 @@ package com.barath.app;
 import com.barath.app.cloudfoundry.config.CloudFoundryProperties;
 import com.barath.app.cloudfoundry.factory.CloudFoundryContext;
 import com.barath.app.cloudfoundry.service.CloudFoundryService;
+import com.barath.app.model.Organization;
 import com.barath.app.utils.JacksonUtils;
 import io.jsonwebtoken.lang.Collections;
 import org.cloudfoundry.operations.CloudFoundryOperations;
@@ -46,15 +47,19 @@ public class DashboardSummaryTest {
                     String datacenter =entry.getKey();
 
                     System.out.println("KEY "+datacenter+" VALUE "+entry.getValue());
-                    List<String> organizations = this.cloudFoundryProperties.getOrganizations().get(entry.getKey());
+                    List<Organization> organizations = this.cloudFoundryProperties.getOrganizations().get(entry.getKey());
                     if(!Collections.isEmpty(organizations)) {
                         organizations.stream()
                                 .forEach(org -> {
 
-                                    List<String> spaces = this.cloudFoundryProperties.getSpaces().get(org);
+                                    List<String> spaces = this.cloudFoundryProperties.getOrganizations().get(datacenter).stream()
+                                    						.filter( a -> a.getName().equals(datacenter))
+                                    							.findFirst().get().getSpaces();
+                                    						
+                                    								
                                     if( !Collections.isEmpty(spaces)) {
                                         spaces.stream().forEach(space -> {
-                                            Flux<ApplicationSummary> applicationSummaryFlux = this.cloudFoundryService.getApps(datacenter, org, space);
+                                            Flux<ApplicationSummary> applicationSummaryFlux = this.cloudFoundryService.getApps(datacenter, org.getName(), space);
                                             List<ApplicationSummary> apps = applicationSummaryFlux
                                                     .collectList().block();
 

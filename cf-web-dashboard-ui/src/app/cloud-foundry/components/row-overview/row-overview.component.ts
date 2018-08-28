@@ -13,71 +13,71 @@ export class RowOverviewComponent implements OnInit {
   temp = Array;
   math = Math;
   public datacenters: Object[];
-  
 
-  constructor( private _router: Router,  private dashBoardService: DashboardService,
+
+  constructor(private _router: Router, private dashBoardService: DashboardService,
     private spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
-    
+
     this.spinnerService.show();
     this.datacenters = [];
-     this.dashBoardService.getSummary()
-      .subscribe( data => {
-          console.log(data);
-          if( data != undefined && data != null) {
-            this.bindSummary(data);
-          }
+    this.dashBoardService.getSummary()
+      .subscribe(data => {
+        console.log(data);
+        if (data !== undefined && data != null) {
+          this.bindSummary(data);
+        }
       }, err => {
-        console.log('error in getting the summary')
-      })
-    
-  }
-
-  public bindSummary( response: any): void  {
-
-    if( response['datacenters'] !== undefined) {
-      const dcs: string[] = Object.keys(response['datacenters']);
-      dcs.forEach( datacenter => {
-          const orgs = response["organizations"][datacenter];
-          const apiHost = response['datacenters'][datacenter];
-          console.log('orgs ',orgs);
-          let spaces = [];
-          if( orgs !=null && orgs.length > 0 ){
-            orgs.forEach( org => {
-                spaces = response['spaces'][org];  
-                          
-            });
-          }
-          const applications = response['applications'][datacenter];
-          const services = response['services'][datacenter];
-          console.log('spaces',spaces);
-          if( applications !=null && applications != undefined)  console.log('applications', JSON.stringify(applications));
-          if( services !=null && services != undefined)   console.log('services',JSON.stringify(services));
-          this.datacenters.push({
-             'name' : datacenter,
-             'apiHost': apiHost,
-             'orgs': orgs,
-             'spaces': spaces,
-            'applications' : applications != undefined ? applications : [],
-            'services': services  != undefined ? services : []
-          });
-         
+        console.log('error in getting the summary');
       });
-      this.spinnerService.hide();
-      console.log("summary",this.datacenters);
-     }
- 
-     
+
   }
 
-  public navigateToDatacenter( datacenter: string){
-    
+  public bindSummary(response: any): void {
+
+    if (response['datacenters'] !== undefined) {
+      const dcs: string[] = Object.keys(response['datacenters']);
+      dcs.forEach(datacenter => {
+        const organizations = response['organizations'][datacenter];
+        const orgs = [];
+        const apiHost = response['datacenters'][datacenter];
+        console.log('orgs ', organizations);
+        let spaces = [];
+        if (organizations != null && organizations.length > 0) {
+          organizations.forEach(org => {
+            spaces = org.spaces;
+            orgs.push(org.name);
+          });
+        }
+        const applications = response['applications'][datacenter];
+        const services = response['services'][datacenter];
+        console.log('spaces', spaces);
+        if (applications != null && applications !== undefined) { console.log('applications', JSON.stringify(applications)); }
+        if (services != null && services !== undefined) { console.log('services', JSON.stringify(services)); }
+        this.datacenters.push({
+          'name': datacenter,
+          'apiHost': apiHost,
+          'orgs': orgs,
+          'spaces': spaces,
+          'applications': applications !== undefined ? applications : [],
+          'services': services !== undefined ? services : []
+        });
+        this.spinnerService.hide();
+      });
+      console.log('summary', this.datacenters);
+    }
+
+
+  }
+
+  public navigateToDatacenter(datacenter: string) {
+
     this.spinnerService.show();
-    console.log("datacenter name",datacenter);
-    this._router.navigate(['/dashboard',datacenter]);
+    console.log('datacenter name', datacenter);
+    this._router.navigate(['/dashboard', datacenter]);
   }
 
-  
+
 
 }

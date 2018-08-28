@@ -3,6 +3,7 @@ package com.barath.app.cloudfoundry.service;
 import com.barath.app.cloudfoundry.config.CloudFoundryProperties;
 import com.barath.app.cloudfoundry.factory.CloudFoundryContext;
 import com.barath.app.model.DashboardSummary;
+import com.barath.app.model.Organization;
 import com.barath.app.utils.JacksonUtils;
 import io.jsonwebtoken.lang.Collections;
 import org.cloudfoundry.operations.CloudFoundryOperations;
@@ -17,6 +18,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -39,7 +42,6 @@ public class DashboardServiceImpl implements DashboardService {
        dashboardSummary.setApplications(getApplications());
        dashboardSummary.setDatacenters(this.cloudFoundryProperties.getEndpoints());
        dashboardSummary.setOrganizations(this.cloudFoundryProperties.getOrganizations());
-       dashboardSummary.setSpaces(this.cloudFoundryProperties.getSpaces());
        dashboardSummary.setServices(this.getServices());
 
        if(logger.isInfoEnabled()){
@@ -65,15 +67,15 @@ public class DashboardServiceImpl implements DashboardService {
                     String datacenter =entry.getKey();
 
                     if(logger.isInfoEnabled()) {logger.info("KEY {} VALUE={}",datacenter,entry.getValue()); }
-                    List<String> organizations = this.cloudFoundryProperties.getOrganizations().get(entry.getKey());
+                    List<Organization> organizations = this.cloudFoundryProperties.getOrganizations().get(entry.getKey());
                     if(!Collections.isEmpty(organizations)) {
                         organizations.stream()
                                 .forEach(org -> {
 
-                                    List<String> spaces = this.cloudFoundryProperties.getSpaces().get(org);
+                                    List<String> spaces = org.getSpaces();
                                     if( !Collections.isEmpty(spaces)) {
                                         spaces.stream().forEach(space -> {
-                                            Flux<ApplicationSummary> applicationSummaryFlux = this.cloudFoundryService.getApps(datacenter, org, space);
+                                            Flux<ApplicationSummary> applicationSummaryFlux = this.cloudFoundryService.getApps(datacenter, org.getName(), space);
                                             List<ApplicationSummary> apps = applicationSummaryFlux
                                                     .collectList().block();
 
@@ -111,15 +113,15 @@ public class DashboardServiceImpl implements DashboardService {
                     String datacenter =entry.getKey();
 
                     if(logger.isInfoEnabled()) {logger.info("KEY {} VALUE={}",datacenter,entry.getValue()); }
-                    List<String> organizations = this.cloudFoundryProperties.getOrganizations().get(entry.getKey());
+                    List<Organization> organizations = this.cloudFoundryProperties.getOrganizations().get(entry.getKey());
                     if(!Collections.isEmpty(organizations)) {
                         organizations.stream()
                                 .forEach(org -> {
 
-                                    List<String> spaces = this.cloudFoundryProperties.getSpaces().get(org);
+                                    List<String> spaces =org.getSpaces();
                                     if( !Collections.isEmpty(spaces)) {
                                         spaces.stream().forEach(space -> {
-                                            Flux<ServiceInstanceSummary> serviceInstanceSummaryFlux = this.cloudFoundryService.getServices(datacenter, org, space);
+                                            Flux<ServiceInstanceSummary> serviceInstanceSummaryFlux = this.cloudFoundryService.getServices(datacenter, org.getName(), space);
                                             List<ServiceInstanceSummary> svcs = serviceInstanceSummaryFlux
                                                     .collectList().block();
 
@@ -143,16 +145,16 @@ public class DashboardServiceImpl implements DashboardService {
         if(logger.isInfoEnabled()){
             logger.info("grouping apps by org and space");
         }
-        List<String> orgs = this.cloudFoundryProperties.getOrganizations().get(datacenter);
+        List<Organization> orgs = this.cloudFoundryProperties.getOrganizations().get(datacenter);
         Map<String,Map<String,List<ApplicationSummary>>> orgApps = new HashMap<>();
         orgs.forEach( org -> {
 
-            List<String> spaces = this.cloudFoundryProperties.getSpaces().get(org);
+            List<String> spaces =org.getSpaces();
             spaces.forEach( space ->{
                 Map<String,List<ApplicationSummary>> spaceApps = new HashMap<>();
-                List<ApplicationSummary> applicationSummaries = this.cloudFoundryService.getApps(datacenter,org,space).collectList().block();
+                List<ApplicationSummary> applicationSummaries = this.cloudFoundryService.getApps(datacenter,org.getName(),space).collectList().block();
                 spaceApps.put(space,applicationSummaries);
-                orgApps.put(org,spaceApps);
+                orgApps.put(org.getName(),spaceApps);
             });
 
         });
@@ -167,16 +169,16 @@ public class DashboardServiceImpl implements DashboardService {
         if(logger.isInfoEnabled()){
             logger.info("grouping apps by org and space");
         }
-        List<String> orgs = this.cloudFoundryProperties.getOrganizations().get(datacenter);
+        List<Organization> orgs = this.cloudFoundryProperties.getOrganizations().get(datacenter);
         Map<String,Map<String,List<ServiceInstanceSummary>>> orgServices = new HashMap<>();
         orgs.forEach( org -> {
 
-            List<String> spaces = this.cloudFoundryProperties.getSpaces().get(org);
+            List<String> spaces = org.getSpaces();
             spaces.forEach( space ->{
                 Map<String,List<ServiceInstanceSummary>> spaceServices = new HashMap<>();
-                List<ServiceInstanceSummary> serviceInstanceSummaries = this.cloudFoundryService.getServices(datacenter,org,space).collectList().block();
+                List<ServiceInstanceSummary> serviceInstanceSummaries = this.cloudFoundryService.getServices(datacenter,org.getName(),space).collectList().block();
                 spaceServices.put(space,serviceInstanceSummaries);
-                orgServices.put(org,spaceServices);
+                orgServices.put(org.getName(),spaceServices);
             });
 
         });

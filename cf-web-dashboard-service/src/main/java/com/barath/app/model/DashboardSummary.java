@@ -1,7 +1,6 @@
 package com.barath.app.model;
 
 import org.cloudfoundry.operations.applications.ApplicationSummary;
-import org.cloudfoundry.operations.services.ServiceInstance;
 import org.cloudfoundry.operations.services.ServiceInstanceSummary;
 
 import java.io.Serializable;
@@ -10,11 +9,11 @@ import java.util.Map;
 
 public class DashboardSummary implements Serializable {
 
-    private Map<String,String> datacenters;
+	private static final long serialVersionUID = 1L;
 
-    private Map<String, List<String>> organizations;
+	private Map<String,String> datacenters;
 
-    private Map<String,List<String>> spaces;
+    private Map<String, List<Organization>> organizations;
 
     private Map<String,List<ApplicationSummary>> applications;
 
@@ -29,22 +28,7 @@ public class DashboardSummary implements Serializable {
         this.datacenters = datacenters;
     }
 
-    public Map<String, List<String>> getOrganizations() {
-        return organizations;
-    }
-
-    public void setOrganizations(Map<String, List<String>> organizations) {
-        this.organizations = organizations;
-    }
-
-    public Map<String, List<String>> getSpaces() {
-        return spaces;
-    }
-
-    public void setSpaces(Map<String, List<String>> spaces) {
-        this.spaces = spaces;
-    }
-
+   
     public Map<String, List<ApplicationSummary>> getApplications() {
         return applications;
     }
@@ -60,8 +44,18 @@ public class DashboardSummary implements Serializable {
     public void setServices(Map<String, List<ServiceInstanceSummary>> services) {
         this.services = services;
     }
+    
+    
 
-    public DashboardSummary() {
+    public Map<String, List<Organization>> getOrganizations() {
+		return organizations;
+	}
+
+	public void setOrganizations(Map<String, List<Organization>> organizations) {
+		this.organizations = organizations;
+	}
+
+	public DashboardSummary() {
 
     }
 }

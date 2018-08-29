@@ -15,6 +15,7 @@ import { DashboardService } from './services/dashboard.service';
 import { AgGridModule } from 'ag-grid-angular';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { MapIteratorPipe } from './pipes/map-iterator.pipe';
+import { ActionService } from './services/action.service';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { MapIteratorPipe } from './pipes/map-iterator.pipe';
   declarations: [DashboardComponent, DatacenterComponent,
                  ApplicationComponent, UserDefinedServiceComponent,
                  OverviewComponent, RowOverviewComponent, MapIteratorPipe],
-  providers: [ DataCenterService, ApplicationService, UserDefinedServiceInstancesService, DashboardService]
+  providers: [ DataCenterService, ApplicationService, UserDefinedServiceInstancesService, 
+               DashboardService, ActionService]
 })
 export class CloudFoundryModule { }

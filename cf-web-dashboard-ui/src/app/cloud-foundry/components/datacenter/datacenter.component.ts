@@ -5,6 +5,7 @@ import { ApplicationService } from '../../services/application.service';
 import { UserDefinedServiceInstancesService } from '../../services/user-defined-service-instances.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { Router } from '@angular/router';
+import { ActionService } from '../../services/action.service';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class DatacenterComponent implements OnInit {
   , private appsService: ApplicationService,
    private cupsService: UserDefinedServiceInstancesService,
    private spinnerService: Ng4LoadingSpinnerService
-  , private router: Router) { }
+  , private router: Router,
+    private actionService: ActionService) { }
 
   ngOnInit() {
 
@@ -278,23 +280,65 @@ export class DatacenterComponent implements OnInit {
   }
 
   public onActionModifyClick(data : any) {
-
+    console.log('modify action with data ',data);
+   
   }
 
   public onActionStartClick(data : any) {
-
+    console.log('start action with data ',data);
+    if(this.isActionAllowed(data.org,data.space,data.name)) {
+      this.actionService.startApp(this.datacenterName,data.org,data.space,data.name)
+                .subscribe( res => {
+                  console.log(' started app with appName',data.name);
+                }, err => {
+                  console.error(' failed in starting app with appName',data.name);
+                });
+    }
   }
 
   public onActionStopClick(data : any) {
-
+    console.log('stop action with data ',data);
+    if(this.isActionAllowed(data.org,data.space,data.name)) {
+      this.actionService.stopApp(this.datacenterName,data.org,data.space,data.name)
+            .subscribe( res => {
+              console.log(' stoped app with appName',data.name);
+            }, err => {
+              console.error(' failed in stopping app with appName',data.name);
+            });
+    }
   }
 
   public onActionReStartClick(data : any){
-
+    console.log('restart action with data ',data);
+    if(this.isActionAllowed(data.org,data.space,data.name)) {
+      this.actionService.restartApp(this.datacenterName,data.org,data.space,data.name)
+      .subscribe( res => {
+        console.log(' restarted app with appName',data.name);
+      }, err => {
+        console.error(' failed in restarting app with appName',data.name);
+      });
+    }
   }
 
   public onActionRestageClick(data : any){
+    console.log('restage action with data ',data);
+    if(this.isActionAllowed(data.org,data.space,data.name)) {
+      this.actionService.restageApp(this.datacenterName,data.org,data.space,data.name)
+      .subscribe( res => {
+        console.log(' restaged app with appName',data.name);
+      }, err => {
+        console.error(' failed in restaging app with appName',data.name);
+      });
+    }
+  }
 
+  private isActionAllowed( org: string, space: string, appName: string): boolean {
+    if( org && space && appName) {
+      return true;
+    }else{
+      console.error('action not allowed as criterias are not met ',appName);
+      return false;
+    }
   }
 
 }

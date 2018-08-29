@@ -8,4 +8,11 @@ export class CONSTANTS {
     public static GET_DATACENTERS_API = environment.serviceUrl.concat('/home/datacenters');
     public static GET_ORGS_API = environment.serviceUrl.concat('/home/orgs');
     public static GET_SPACES_API = environment.serviceUrl.concat('/home/spaces');
+
+    public static START_ACTION_API = environment.serviceUrl.concat('/actions/start');
+    public static RESTART_ACTION_API = environment.serviceUrl.concat('/actions/restart');
+    public static STOP_ACTION_API = environment.serviceUrl.concat('/actions/stop');
+    public static RESTAGE_ACTION_API = environment.serviceUrl.concat('/actions/restage');
+    
+
 }

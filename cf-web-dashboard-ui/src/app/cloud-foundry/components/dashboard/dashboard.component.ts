@@ -71,6 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
                             this.showCUPS = false;
                             this.showOverview = false;
                             this.showDatacenters = true;
+                            this._router.navigateByUrl('/dashboard/datacenters');
                             break;
       case 'services' : this.showApps = false;
                         this.showCUPS = true;
@@ -86,6 +87,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
                             this.showCUPS = false;
                             this.showOverview = true;
                             this.showDatacenters = false;
+                            this._router.navigateByUrl('/dashboard');
                             break;
       default : this.showApps = false;
                 this.showCUPS = false;

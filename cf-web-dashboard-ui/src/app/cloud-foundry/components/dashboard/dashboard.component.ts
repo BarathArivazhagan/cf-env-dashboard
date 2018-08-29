@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { DataCenterService } from '../../services/data-center.service';
+import { UserDefinedServiceComponent } from '../user-defined-service/user-defined-service.component';
+import { UserDefinedServiceInstancesService } from '../../services/user-defined-service-instances.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,11 +22,13 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(ApplicationComponent) apps: ApplicationComponent;
   @ViewChild(DatacenterComponent) datacenters: DatacenterComponent;
+  @ViewChild(UserDefinedServiceComponent) cups: UserDefinedServiceComponent;
 
   constructor(private _router: Router, private activatedRoute: ActivatedRoute
      , private dashboardService: DashboardService
      , private datacenterService: DataCenterService
-    , private spinnerService: Ng4LoadingSpinnerService) { }
+    , private spinnerService: Ng4LoadingSpinnerService,
+      private userDefinedService: UserDefinedServiceInstancesService ) { }
 
   ngOnInit() {
 
@@ -35,6 +39,9 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
               if ( param.datacenter) {
                   this.datacenterService.setDatacenter(param.datacenter);
                   this.showViewsByName('datacenters');
+              } else if( param.serviceName) {
+                this.userDefinedService.setUserDefinedServiceName(param.serviceName);
+                this.showViewsByName('services');
               }
 
           });

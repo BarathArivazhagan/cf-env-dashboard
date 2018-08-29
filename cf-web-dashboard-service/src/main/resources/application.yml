@@ -20,16 +20,15 @@ cf:
     D5: api.run.pivotal.io
   organizations:
     D1:
-    - Barath-Dev
+    - name: Barath-Dev
+      spaces:
+      - development
+      - production
+      - test
     D2:
-    - barathpari-dev
-  spaces:
-    Barath-Dev:
-    - development
-    - production
-    - test
-    barathpari-dev:
-    - development
+    - name: barathpari-dev
+      spaces:
+      - development
   username: ${username}
   password: ${password}
 management:

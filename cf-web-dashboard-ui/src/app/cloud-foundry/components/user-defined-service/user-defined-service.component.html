@@ -1,3 +1,32 @@
-<p>
-  user-defined-service works!
-</p>
+<div class="row align-text-label">
+   User-Defined-Service : {{userServiceName}}
+</div>
+<div class="row" >
+  <div class="row credential-label"> Credentials</div>
+  <div class="row" *ngFor="let cred of credentials | mapIterator">
+       <div class="col-sm-1"></div>
+       <div class="col-sm-5">          
+          <input type="text" class="form-control" id="{{cred.key}}" value="{{cred.key}}">
+        </div>
+        <div class="col-sm-5">
+            <input type="text" class="form-control" id="{{cred.value}}" value="{{cred.value}}">
+        </div>
+        <div class="col-sm-1"><span class="close" (click)="closeItem($event,cred)">x</span></div>
+  </div>
+
+  <div *ngIf="isBulk" class="row">
+    <div>
+      <label><input type="checkbox" value="">Option 1</label>
+    </div>
+  
+  </div>
+</div>
+<div class="row padding-align">
+  <div class="col-sm-3"></div>
+  <div class="col-sm-3"></div>
+  <div class="col-sm-3"></div>
+  <div class="col-sm-3">
+    <button type="button" data-action-type="update" (click)="updateService()" class="btn btn-primary"> Update Service</button>
+  </div>
+</div>
+

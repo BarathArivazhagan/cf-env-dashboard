@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.jsonwebtoken.lang.Assert;
+import org.cloudfoundry.client.CloudFoundryClient;
+import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceRequest;
+import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceResponse;
+import org.cloudfoundry.client.v2.userprovidedserviceinstances.UserProvidedServiceInstances;
 import org.cloudfoundry.operations.CloudFoundryOperations;
 import org.cloudfoundry.operations.applications.ApplicationSummary;
 import org.cloudfoundry.operations.applications.RestageApplicationRequest;
@@ -142,6 +147,29 @@ public class CloudFoundryServiceImpl implements CloudFoundryService {
                 .userProvidedServiceInstanceName(name)
                 .build();
         return cfOperations.services().updateUserProvidedInstance(request);
+    }
+
+    @Override
+    public Mono<GetUserProvidedServiceInstanceResponse> getUserProvidedServiceInstance(String datacenter, String org, String space, String name){
+
+       String id = this.getUserServiceNameById(datacenter, org, space, name);
+       return this.getUserProvidedServiceInstanceById(datacenter,id);
+    }
+
+    public Mono<GetUserProvidedServiceInstanceResponse> getUserProvidedServiceInstanceById(String datacenter, String id){
+        CloudFoundryClient cloudFoundryClient = this.cloudFoundryContext.getCloudFoundryClient(datacenter);
+        GetUserProvidedServiceInstanceRequest req = GetUserProvidedServiceInstanceRequest
+                                                                              .builder()
+                                                                              .userProvidedServiceInstanceId(id).build();
+
+        return cloudFoundryClient.userProvidedServiceInstances().get(req);
+
+    }
+
+    protected String getUserServiceNameById(String datacenter, String org, String space, String name) {
+        ServiceInstance  serviceInstance =  this.getServiceInstanceByName(datacenter,org,space,name).block();
+        Assert.notNull(serviceInstance, "service instance cannot be empty");
+        return serviceInstance.getId();
     }
 
 

@@ -8,7 +8,7 @@
         <div class="col-sm-4"  style="padding-left: 0px;padding-right: 0px;">
             <div class="col-sm-1 dropdown-label-align">DC:</div>
             <div class="col-sm-3">
-              <select class="dropdown-select" (change)="doOnChangeDropdown($event.target.value)">
+              <select class="dropdown-select" (change)="doOnChangeDropdown('datacenter',$event.target.value)">
                 <option value="all"> ALL </option>
                 <option *ngFor="let dc of datacenters" value={{dc}}>
                     {{dc}}
@@ -20,7 +20,7 @@
         <div class="col-sm-4 " style="padding-left: 0px;padding-right: 0px;">
             <div class="col-sm-1 dropdown-label-align" style="padding-right: 20px;">ORG:</div>
             <div class="col-sm-3">
-              <select class="dropdown-select" (change)="doOnChangeDropdown($event.target.value)">
+              <select class="dropdown-select" (change)="doOnChangeDropdown('org',$event.target.value)">
                 <option value="all"> ALL </option>
                 <option *ngFor="let org of orgs" value={{org}}>
                     {{org}}
@@ -32,7 +32,7 @@
         <div class="col-sm-4" style="padding-left: 0px;padding-right: 0px;">
             <div class="col-sm-1 dropdown-label-align" style="padding-right: 40px;">SPACE:</div>
             <div class="col-sm-3"> 
-               <select class="dropdown-select" (change)="doOnChangeDropdown($event.target.value)">
+               <select class="dropdown-select" (change)="doOnChangeDropdown('space',$event.target.value)">
                 <option value="all"> ALL </option>
                 <option *ngFor="let space of spaces" value={{space}}>
                     {{space}}
@@ -46,7 +46,7 @@
     
  <div class="align-text-label">Applications</div>
  <ag-grid-angular 
-    style="height: 400px;"
+    style="width: 100%;  height: 400px;"
     id="appsGrid"    
     class="ag-theme-balham"
     [enableSorting]="true"
@@ -54,6 +54,7 @@
     [columnDefs]="appsColumnDefs"
     [enableFilter]="true"
     (gridReady)="onAppsGridReady($event)"
+    (rowClicked)="onRowClicked($event)">
     >
 </ag-grid-angular>
 </div>
@@ -68,6 +69,7 @@
     [columnDefs]="servicesColumnDefs"
     [enableFilter]="true"
     (gridReady)="onServicesGridReady($event)"
+    (rowClicked)="onRowClicked($event)">
     >
 </ag-grid-angular>
 </div>

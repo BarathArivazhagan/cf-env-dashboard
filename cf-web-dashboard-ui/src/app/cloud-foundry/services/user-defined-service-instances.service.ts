@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class UserDefinedServiceInstancesService {
 
+  private userServiceName;
+
   constructor(private _http: HttpClient) { }
 
   public getCups( datacenter: string , org: string, space: string): Observable<any> {
@@ -16,5 +18,21 @@ export class UserDefinedServiceInstancesService {
   public getCupsByDatacenter( datacenter: string) : Observable<any> {
     return this._http.get(CONSTANTS.GET_SERVICES_API.concat("/").concat(datacenter));
   }
+
+  public getCupsByServiceName( datacenter: string, org: string, space: string, serviceName: string): Observable<any> {
+    return this._http.get(CONSTANTS.GET_SERVICES_API
+      .concat("/").concat(datacenter).concat("/").concat(org).concat("/").concat(space)
+      .concat("/").concat(serviceName));
+  }
+
+  public setUserDefinedServiceName( serviceName: string ) {
+    this.userServiceName = serviceName;
+  }
+
+  public getUserDefinedServiceName() {
+    return this.userServiceName;
+  }
+
+  
 
 }

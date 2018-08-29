@@ -3,6 +3,7 @@ package com.barath.app.controller;
 import com.barath.app.cloudfoundry.service.CloudFoundryService;
 import com.barath.app.cloudfoundry.service.DashboardService;
 import com.barath.app.utils.JacksonUtils;
+import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceResponse;
 import org.cloudfoundry.operations.services.ServiceInstance;
 import org.cloudfoundry.operations.services.ServiceInstanceSummary;
 import org.slf4j.Logger;
@@ -33,15 +34,15 @@ public class UserDefinedServiceInstancesController {
 	
 	
 	@GetMapping("/{datacenter}/{organization}/{space}/{name}")
-	public Mono<ServiceInstance> getServiceInstanceByName(@PathVariable("datacenter") String datacenter,
-														  @PathVariable("space") String space,
-														  @PathVariable("organization") String organization,
-														  @PathVariable("name") String name) {
+	public Mono<GetUserProvidedServiceInstanceResponse> getServiceInstanceByName(@PathVariable("datacenter") String datacenter,
+																				 @PathVariable("space") String space,
+																				 @PathVariable("organization") String organization,
+																				 @PathVariable("name") String name) {
 		
 		if(logger.isInfoEnabled()) {
 			logger.info("get service instance with name={} datacenter={}",name,datacenter);
 		}
-		return this.cfService.getServiceInstanceByName(datacenter,organization,space,name);
+		return this.cfService.getUserProvidedServiceInstance(datacenter,organization,space,name);
 		
 	}
 	

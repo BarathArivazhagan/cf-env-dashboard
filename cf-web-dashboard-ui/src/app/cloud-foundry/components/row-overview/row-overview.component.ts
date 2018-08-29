@@ -75,7 +75,7 @@ export class RowOverviewComponent implements OnInit {
 
     this.spinnerService.show();
     console.log('datacenter name', datacenter);
-    this._router.navigate(['/dashboard', datacenter]);
+    this._router.navigate(['/dashboard/datacenters', datacenter]);
   }
 
 

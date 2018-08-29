@@ -2,6 +2,7 @@ package com.barath.app.cloudfoundry.service;
 
 import java.util.Map;
 
+import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceResponse;
 import org.cloudfoundry.operations.applications.ApplicationSummary;
 import org.cloudfoundry.operations.services.ServiceInstance;
 import org.cloudfoundry.operations.services.ServiceInstanceSummary;
@@ -19,6 +20,7 @@ public interface CloudFoundryService {
 	Mono<Void> restageApplication(String datacenter, String org, String space, String appName);
 	Flux<ServiceInstanceSummary> getServices(String datacenter, String org, String space);
 	Mono<ServiceInstance> getServiceInstanceByName(String datacenter, String org, String space, String name);
+	Mono<GetUserProvidedServiceInstanceResponse> getUserProvidedServiceInstance(String datacenter, String org, String space, String name);
 	Mono<Void> updateUserDefinedServiceInstanceByName(String datacenter, String org, String space, String name, Map<String,String> credentials);
 	Mono<Void> createUserDefinedServiceInstance(String datacenter, String org, String space, String name, Map<String,String> credentials);
 }

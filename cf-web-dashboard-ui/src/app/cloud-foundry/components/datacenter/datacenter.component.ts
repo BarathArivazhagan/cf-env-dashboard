@@ -4,6 +4,7 @@ import { forkJoin } from "rxjs/observable/forkJoin";
 import { ApplicationService } from '../../services/application.service';
 import { UserDefinedServiceInstancesService } from '../../services/user-defined-service-instances.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class DatacenterComponent implements OnInit {
   constructor(private dataCenterService: DataCenterService
   , private appsService: ApplicationService,
    private cupsService: UserDefinedServiceInstancesService,
-   private spinnerService: Ng4LoadingSpinnerService ) { }
+   private spinnerService: Ng4LoadingSpinnerService
+  , private router: Router) { }
 
   ngOnInit() {
 
@@ -126,6 +128,7 @@ export class DatacenterComponent implements OnInit {
 
   public view_data_center(): void {
 
+    this.spinnerService.show();
     forkJoin([ this.appsService.getAppsbyDatacenter(this.datacenterName), this.cupsService.getCupsByDatacenter(this.datacenterName)])
           .subscribe( results => {
             console.log("results",results);
@@ -220,11 +223,78 @@ export class DatacenterComponent implements OnInit {
 
   public serviceActionsCellRenderer(params : any) : string {
     console.log('services action cell rendered invoked with params', params);
-    return '<div class="btn-group"><button type="button" data-action-type="view" class="btn btn-success"> View </button><button type="button" data-action-type="modify" class="btn btn-primary"> Modify </button></div>';
+    return '<div class="btn-group"><button type="button" data-action-type="view" class="btn btn-success"> View </button><button type="button" data-action-type="modify" class="btn btn-primary"> Modify </button>'+
+           '<button type="button" data-action-type="bulkmodify" class="btn btn-primary"> Bulk Modify </button></div>';
   }
 
-  public doOnChangeDropdown(value: string) {
-    console.log("dropdown function called ",value);
+  public doOnChangeDropdown(action: string,value: string) {
+    console.log("dropdown function called with action {} and value {} ",action,value);
+    switch(action){
+
+      case 'datacenter' : this.datacenterName = value;
+                          this.view_data_center();break;
+
+      
+    }
+  }
+
+
+  public onRowClicked(e) {
+    if (e.event.target !== undefined) {
+        let data = e.data;
+        let actionType = e.event.target.getAttribute('data-action-type');
+
+        switch(actionType) {
+            case "view":
+                return this.onActionViewClick(data); 
+            case "modify":
+                return this.onActionModifyClick(data); 
+            case "start":
+                return this.onActionStartClick(data); 
+            case "stop":
+                return this.onActionStopClick(data); 
+           case "restart":
+                return this.onActionReStartClick(data);
+            case "restage":
+                return this.onActionRestageClick(data); 
+           case 'bulkmodify' :
+                return this.onActionBulkModifyClick(data);
+        }
+    }
+  }
+
+  public onActionBulkModifyClick(data : any) {
+
+  }
+
+  public onActionViewClick(data : any) {
+    console.log('action view called with data {}',data);
+    const serviceName = data.name;
+    this.dataCenterService.setOrg(data.org);
+    this.dataCenterService.setSpace(data.space);
+    this.dataCenterService.setDatacenter(this.datacenterName);
+    this.router.navigate(['/dashboard/cups', serviceName]);
+
+  }
+
+  public onActionModifyClick(data : any) {
+
+  }
+
+  public onActionStartClick(data : any) {
+
+  }
+
+  public onActionStopClick(data : any) {
+
+  }
+
+  public onActionReStartClick(data : any){
+
+  }
+
+  public onActionRestageClick(data : any){
+
   }
 
 }

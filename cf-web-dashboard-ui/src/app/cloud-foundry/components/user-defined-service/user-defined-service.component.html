@@ -1,5 +1,17 @@
-<div class="row align-text-label">
-   User-Defined-Service : {{userServiceName}}
+<div class="row align-text-label background-align">
+  <div class="col-sm-3">
+     User-Defined-Service 
+     <div>{{userServiceName}}</div>
+  </div>
+  <div class="col-sm-3">
+      Datacenter : {{datacenter}}
+   </div>
+   <div class="col-sm-3">
+      Org : {{org}}
+   </div>
+   <div class="col-sm-3">
+      Space : {{space}}
+   </div>
 </div>
 <div class="row" >
   <div class="row credential-label"> Credentials</div>
@@ -26,7 +38,28 @@
   <div class="col-sm-3"></div>
   <div class="col-sm-3"></div>
   <div class="col-sm-3">
-    <button type="button" data-action-type="update" (click)="updateService()" class="btn btn-primary"> Update Service</button>
+    <button type="button" data-action-type="update" (click)="openModal()" class="btn btn-primary"> Update Service</button>
   </div>
 </div>
 
+<div #myModal class="modal fade">
+    <div class="modal-dialog modal-custom-dialog-align">
+      <div class="modal-content modal-custom-align">
+       <div class="modal-header row">
+         <div class="col-sm-10"><h2 class="modal-title ">Warning</h2></div>
+         <div class="col-sm-2">
+            <button type="button" class="close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <p>Do you want to update service credentials ?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="updateService()">Yes</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeModal()">No</button>
+        </div>
+      </div>
+    </div>
+  </div>

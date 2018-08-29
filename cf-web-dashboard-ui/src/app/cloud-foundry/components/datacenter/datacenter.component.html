@@ -53,6 +53,7 @@
     [rowData]="appsRowData" 
     [columnDefs]="appsColumnDefs"
     [enableFilter]="true"
+    [gridAutoHeight]="true"
     (gridReady)="onAppsGridReady($event)"
     (rowClicked)="onRowClicked($event)">
     >
@@ -69,6 +70,7 @@
     [columnDefs]="servicesColumnDefs"
     [enableFilter]="true"
     (gridReady)="onServicesGridReady($event)"
+    [gridAutoHeight]="true"
     (rowClicked)="onRowClicked($event)">
     >
 </ag-grid-angular>

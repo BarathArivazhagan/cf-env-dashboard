@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
 import { UserDefinedServiceInstancesService } from '../../services/user-defined-service-instances.service';
 import { DataCenterService } from '../../services/data-center.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
@@ -8,11 +8,15 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
   templateUrl: './user-defined-service.component.html',
   styleUrls: ['./user-defined-service.component.css']
 })
-export class UserDefinedServiceComponent implements OnInit {
+export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   public userServiceName:string ;
+  public org: string;
+  public datacenter: string;
+  public space: string;
   public isBulk = false;
   public credentials = [] ;
+  @ViewChild('myModal') myModal;
 
   constructor( private userDefinedService: UserDefinedServiceInstancesService,
                private datacenterService: DataCenterService,
@@ -26,6 +30,9 @@ export class UserDefinedServiceComponent implements OnInit {
     const datacenter = this.datacenterService.getDatacenter();
     const org = this.datacenterService.getOrg();
     const space = this.datacenterService.getSpace();
+    this.datacenter =datacenter;
+    this.org = org;
+    this.space = space;
     this.userDefinedService.getCupsByServiceName(datacenter,org,space,this.userServiceName)
         .subscribe( data => {
           console.log('service details with service name {} and details {}',this.userServiceName,data);
@@ -43,6 +50,26 @@ export class UserDefinedServiceComponent implements OnInit {
 
   public updateService(): void {
     console.log('update service');
+    this.openModal();
+  }
+
+  public openModal() {
+    this.myModal.nativeElement.className = 'modal show';
+  }
+  public closeModal() {
+     this.myModal.nativeElement.className = 'modal hide';
+  }
+
+
+
+  ngAfterViewInit(): void {
+    
+    
+  }
+
+  ngOnDestroy(): void {
+  
+    
   }
 
 }

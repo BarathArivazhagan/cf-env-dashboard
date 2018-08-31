@@ -13,9 +13,10 @@
       Space : {{space}}
    </div>
 </div>
-<div class="row" >
+<div class="row credentials-align" >
   <div class="row credential-label"> Credentials</div>
-  <div class="row" *ngFor="let cred of credentials | mapIterator">
+  
+  <div class="row credential-row-align" *ngFor="let cred of credentials | mapIterator">
        <div class="col-sm-1"></div>
        <div class="col-sm-5">          
           <input type="text" class="form-control" id="{{cred.key}}" value="{{cred.key}}">
@@ -23,8 +24,12 @@
         <div class="col-sm-5">
             <input type="text" class="form-control" id="{{cred.value}}" value="{{cred.value}}">
         </div>
-        <div class="col-sm-1"><span class="close" (click)="closeItem($event,cred)">x</span></div>
-  </div>
+        <div class="col-sm-1">
+          <span class="close" (click)="closeItem($event,cred)">x</span>
+          <span class="glyphicon glyphicon-plus plus-align" aria-hidden="true" (click)="addNewRow()"></span>
+        
+        </div>
+  </div> 
 
   <div *ngIf="isBulk" class="row">
     <div>

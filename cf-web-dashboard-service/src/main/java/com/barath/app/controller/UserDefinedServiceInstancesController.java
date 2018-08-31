@@ -4,6 +4,7 @@ import com.barath.app.cloudfoundry.service.CloudFoundryService;
 import com.barath.app.cloudfoundry.service.DashboardService;
 import com.barath.app.utils.JacksonUtils;
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceResponse;
+import org.cloudfoundry.client.v2.userprovidedserviceinstances.UpdateUserProvidedServiceInstanceResponse;
 import org.cloudfoundry.operations.services.ServiceInstance;
 import org.cloudfoundry.operations.services.ServiceInstanceSummary;
 import org.slf4j.Logger;
@@ -69,13 +70,13 @@ public class UserDefinedServiceInstancesController {
 	}
 
 	@PutMapping("/{datacenter}/{organization}/{space}/{name}")
-	public Mono<Void> updateServiceInstanceByName(@PathVariable("datacenter") String datacenter,
-															 @PathVariable("space") String space,
-															 @PathVariable("organization") String organization,
-															 @PathVariable("name") String name, @RequestBody Map<String,String> credentials) {
+	public Mono<UpdateUserProvidedServiceInstanceResponse> updateServiceInstanceByName(@PathVariable("datacenter") String datacenter,
+																					   @PathVariable("space") String space,
+																					   @PathVariable("organization") String organization,
+																					   @PathVariable("name") String name, @RequestBody Map<String,String> credentials) {
 
 		if(logger.isInfoEnabled()) {
-			logger.info("update service instance with name={} datacenter={}",name,datacenter);
+			logger.info("update service instance with name={} datacenter={} org={} space={}",name,datacenter,organization,space);
 			logger.info("credentials to be updated {}", JacksonUtils.toJson(credentials));
 		}
 		return this.cfService.updateUserDefinedServiceInstanceByName(datacenter,organization,space,name,credentials);

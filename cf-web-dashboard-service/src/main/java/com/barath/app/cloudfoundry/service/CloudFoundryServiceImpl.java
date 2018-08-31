@@ -9,6 +9,7 @@ import io.jsonwebtoken.lang.Assert;
 import org.cloudfoundry.client.CloudFoundryClient;
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceRequest;
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceResponse;
+import org.cloudfoundry.client.v2.userprovidedserviceinstances.UpdateUserProvidedServiceInstanceResponse;
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.UserProvidedServiceInstances;
 import org.cloudfoundry.operations.CloudFoundryOperations;
 import org.cloudfoundry.operations.applications.ApplicationSummary;
@@ -136,18 +137,7 @@ public class CloudFoundryServiceImpl implements CloudFoundryService {
         return cfOperations.services().createUserProvidedInstance(request);
     }
     
-    @Override
-    public Mono<Void> updateUserDefinedServiceInstanceByName(String datacenter, String org, String space, String name, Map<String,String> credentials){
 
-        CloudFoundryOperations cfOperations = this.cloudFoundryContext.getCloudFoundryOperations(datacenter,org,space);
-        Mono<ServiceInstance> serviceInstanceMono = this.getServiceInstanceByName(datacenter,org,space,name);
-        ServiceInstance serviceInstance = serviceInstanceMono.block();
-        UpdateUserProvidedServiceInstanceRequest request = UpdateUserProvidedServiceInstanceRequest.builder()
-                .putAllCredentials(credentials)
-                .userProvidedServiceInstanceName(name)
-                .build();
-        return cfOperations.services().updateUserProvidedInstance(request);
-    }
 
     @Override
     public Mono<GetUserProvidedServiceInstanceResponse> getUserProvidedServiceInstance(String datacenter, String org, String space, String name){
@@ -163,6 +153,26 @@ public class CloudFoundryServiceImpl implements CloudFoundryService {
                                                                               .userProvidedServiceInstanceId(id).build();
 
         return cloudFoundryClient.userProvidedServiceInstances().get(req);
+
+    }
+
+    public Mono<UpdateUserProvidedServiceInstanceResponse> updateUserProvidedServiceInstanceById(String datacenter, String id, Map<String,String> credentials){
+        CloudFoundryClient cloudFoundryClient = this.cloudFoundryContext.getCloudFoundryClient(datacenter);
+        org.cloudfoundry.client.v2.userprovidedserviceinstances.UpdateUserProvidedServiceInstanceRequest req = org.cloudfoundry.client.v2.userprovidedserviceinstances.UpdateUserProvidedServiceInstanceRequest
+
+                .builder()
+                .userProvidedServiceInstanceId(id)
+                .putAllCredentials(credentials)
+                .build();
+
+        return cloudFoundryClient.userProvidedServiceInstances().update(req);
+
+
+    }
+
+    @Override
+    public Mono<UpdateUserProvidedServiceInstanceResponse> updateUserDefinedServiceInstanceByName(String datacenter, String org, String space, String name, Map<String, String> credentials) {
+        return this.updateUserProvidedServiceInstanceById(datacenter,this.getUserServiceNameById(datacenter,org,space,name),credentials);
 
     }
 

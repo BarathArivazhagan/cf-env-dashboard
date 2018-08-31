@@ -25,6 +25,13 @@ export class UserDefinedServiceInstancesService {
       .concat("/").concat(serviceName));
   }
 
+  public updateCupsByServiceName( datacenter: string, org: string, space: string, serviceName: string, credentials: any): Observable<any> {
+    
+    return this._http.put(CONSTANTS.GET_SERVICES_API
+      .concat("/").concat(datacenter).concat("/").concat(org).concat("/").concat(space)
+      .concat("/").concat(serviceName), credentials);
+  }
+
   public setUserDefinedServiceName( serviceName: string ) {
     this.userServiceName = serviceName;
   }

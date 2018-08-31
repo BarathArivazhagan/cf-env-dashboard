@@ -15,7 +15,9 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
   public datacenter: string;
   public space: string;
   public isBulk = false;
-  public credentials = [] ;
+  public credentialsGridApi;
+  public credentialsGridColumnApi;
+  public credentials ;
   @ViewChild('myModal') myModal;
 
   constructor( private userDefinedService: UserDefinedServiceInstancesService,
@@ -50,7 +52,8 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
 
   public updateService(): void {
     console.log('update service');
-    this.openModal();
+    this.userDefinedService.updateCupsByServiceName(this.datacenter,
+          this.org,this.space,this.userServiceName,this.credentials);
   }
 
   public openModal() {
@@ -59,7 +62,17 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
   public closeModal() {
      this.myModal.nativeElement.className = 'modal hide';
   }
+ 
+  public onRowClicked(e) {
+    if (e.event.target !== undefined) {
+    }
+  }
 
+  public addNewRow(): void {
+    console.log('add new row');
+    const creds = Object.assign(this.credentials, { 'key' :'value'});
+    this.credentials = creds;
+  }
 
 
   ngAfterViewInit(): void {

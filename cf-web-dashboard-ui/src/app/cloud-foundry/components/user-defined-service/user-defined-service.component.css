@@ -34,6 +34,10 @@
     padding-top: 30px;
   }
 
+  .credential-row-align{
+    padding-top: 10px;
+  }
+
   .modal-custom-align{
     background-color: #243641;
     color: yellow;
@@ -41,4 +45,14 @@
   }
   .modal-custom-dialog-align{
       padding-top: 20%;
+  }
+
+  .credentials-align{
+      height: 300px;
+      overflow: auto;
+  }
+
+  .plus-align{
+    padding-left: 30px;
+    padding-top: 3px;
   }

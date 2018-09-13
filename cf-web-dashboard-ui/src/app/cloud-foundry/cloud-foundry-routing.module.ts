@@ -5,7 +5,7 @@ import { ApplicationComponent } from './components/application/application.compo
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: 'dashboard', component: DashboardComponent  },
+  { path: 'dashboard', component: DashboardComponent  }, 
   { path: 'dashboard/datacenters/:datacenter', component: DashboardComponent},
   { path: 'dashboard/cups/:serviceName', component: DashboardComponent}
 ];

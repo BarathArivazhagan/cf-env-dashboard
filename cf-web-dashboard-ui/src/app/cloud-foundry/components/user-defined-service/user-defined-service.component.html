@@ -16,7 +16,7 @@
 <div class="row credentials-align" >
   <div class="row credential-label"> Credentials</div>
   
-  <div class="row credential-row-align" *ngFor="let cred of credentials | mapIterator">
+  <div class="row credential-row-align" *ngFor="let cred of credentials">
        <div class="col-sm-1"></div>
        <div class="col-sm-5">          
           <input type="text" class="form-control" id="{{cred.key}}" value="{{cred.key}}">

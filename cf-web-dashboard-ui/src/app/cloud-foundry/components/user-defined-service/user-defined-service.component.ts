@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { UserDefinedServiceInstancesService } from '../../services/user-defined-service-instances.service';
 import { DataCenterService } from '../../services/data-center.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
@@ -7,6 +7,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
   selector: 'app-user-defined-service',
   templateUrl: './user-defined-service.component.html',
   styleUrls: ['./user-defined-service.component.css']
+  
 })
 export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterViewInit  {
 
@@ -22,7 +23,8 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
 
   constructor( private userDefinedService: UserDefinedServiceInstancesService,
                private datacenterService: DataCenterService,
-               private spinnerService: Ng4LoadingSpinnerService ) { }
+               private spinnerService: Ng4LoadingSpinnerService,
+              private cd: ChangeDetectorRef ) { }
 
   ngOnInit() {
 
@@ -38,7 +40,7 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
     this.userDefinedService.getCupsByServiceName(datacenter,org,space,this.userServiceName)
         .subscribe( data => {
           console.log('service details with service name {} and details {}',this.userServiceName,data);
-          this.credentials = data.entity.credentials;
+          this.updateCredentials(data.entity.credentials);
         }, err => {
           console.log('error in getting the service details {}',err);
         });
@@ -53,7 +55,13 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
   public updateService(): void {
     console.log('update service');
     this.userDefinedService.updateCupsByServiceName(this.datacenter,
-          this.org,this.space,this.userServiceName,this.credentials);
+          this.org,this.space,this.userServiceName,this.credentials[0])
+          .subscribe( res => {
+            console.log('cups service successfully updated');
+            this.closeModal();
+          }, err => {
+            console.log('error in updating the service');
+          });
   }
 
   public openModal() {
@@ -69,9 +77,25 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
   }
 
   public addNewRow(): void {
-    console.log('add new row');
-    const creds = Object.assign(this.credentials, { 'key' :'value'});
-    this.credentials = creds;
+    console.log('add new row');    
+    this.credentials.push( { 'key' : 'key', 'value': 'value'} );
+   
+  }
+
+  public updateCredentials( value: any) : void {
+    let result = [];
+    console.log('map pipe invoked with value',value);
+    if(value && value.entries) {
+      for (var [key, value] of value.entries()) {
+        result.push({ key, value });
+      }
+    } else {
+      for(let key in value) {
+        result.push({ key, value: value[key] });
+      }
+    }
+
+    this.credentials = result;  
   }
 
 

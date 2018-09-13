@@ -15,7 +15,6 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
   public org: string;
   public datacenter: string;
   public space: string;
-  public isBulk = false;
   public credentialsGridApi;
   public credentialsGridColumnApi;
   public credentials ;
@@ -54,13 +53,16 @@ export class UserDefinedServiceComponent implements OnInit, OnDestroy, AfterView
 
   public updateService(): void {
     console.log('update service');
+    this.spinnerService.show();
     this.userDefinedService.updateCupsByServiceName(this.datacenter,
           this.org,this.space,this.userServiceName,this.credentials[0])
           .subscribe( res => {
             console.log('cups service successfully updated');
             this.closeModal();
+            this.spinnerService.hide();
           }, err => {
             console.log('error in updating the service');
+            this.spinnerService.hide();
           });
   }
 

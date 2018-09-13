@@ -29,8 +29,7 @@ export class DatacenterComponent implements OnInit {
   public spaces= [];
   public orgs = [];
   public showOrgSpace = false;
-
-
+ 
 
   constructor(private dataCenterService: DataCenterService
   , private appsService: ApplicationService,
@@ -95,7 +94,14 @@ export class DatacenterComponent implements OnInit {
   }
 
   public populateDropDowns(): void {
+    
+    this.populateDatacenters();
+    this.populateOrgs(this.datacenterName);
+    this.populateSpaces(this.datacenterName);  
 
+  }
+
+  public populateDatacenters(): void {
     this.dataCenterService.getDataCenters()
       .subscribe( data => {
          console.log('datacenters', data);
@@ -103,18 +109,11 @@ export class DatacenterComponent implements OnInit {
       }, err => {
          console.log(' error in getting datacenters');
       });
-    
-    this.dataCenterService.getOrgs(this.datacenterName)
-      .subscribe( data =>{
-        console.log('orgs', data);
-        this.orgs = data;
-       
-      } , err =>{
-        console.log(' error in getting datacenters');
-      });
+  }
 
+  public populateSpaces( datacenter: string): void {
        
-    this.dataCenterService.getSpaces(this.datacenterName)
+    this.dataCenterService.getSpaces(datacenter)
     .subscribe( data =>{
       console.log('spaces', data);
       this.spaces = data;
@@ -122,10 +121,18 @@ export class DatacenterComponent implements OnInit {
     } , err =>{
       console.log(' error in getting datacenters');
     });
+  }
 
+  public populateOrgs(datacenter: string): void{
 
-    
-
+    this.dataCenterService.getOrgs(datacenter)
+    .subscribe( data =>{
+      console.log('orgs', data);
+      this.orgs = data;
+     
+    } , err =>{
+      console.log(' error in getting datacenters');
+    });
   }
 
   public view_data_center(): void {
@@ -234,7 +241,10 @@ export class DatacenterComponent implements OnInit {
     switch(action){
 
       case 'datacenter' : this.datacenterName = value;
-                          this.view_data_center();break;
+                          this.view_data_center();
+                          this.populateOrgs(value);
+                          this.populateSpaces(value);
+                          break;
 
       
     }

@@ -1,26 +1,25 @@
 package com.barath.app;
 
 
-import com.barath.app.cloudfoundry.config.CloudFoundryProperties;
-import com.barath.app.cloudfoundry.factory.CloudFoundryContext;
-import com.barath.app.cloudfoundry.service.CloudFoundryService;
-import com.barath.app.model.Organization;
-import com.barath.app.utils.JacksonUtils;
-import io.jsonwebtoken.lang.Collections;
-import org.cloudfoundry.operations.CloudFoundryOperations;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.cloudfoundry.operations.applications.ApplicationSummary;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.barath.app.cloudfoundry.config.CloudFoundryProperties;
+import com.barath.app.cloudfoundry.factory.CloudFoundryContext;
+import com.barath.app.cloudfoundry.service.CloudFoundryService;
+import com.barath.app.model.Organization;
+import com.barath.app.utils.JacksonUtils;
+
+import io.jsonwebtoken.lang.Collections;
+import reactor.core.publisher.Flux;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -39,7 +38,7 @@ public class DashboardSummaryTest {
     @Test
     public void testGroupAppsByDatacenter(){
 
-        Map<String,List<ApplicationSummary>> applications= new HashMap();
+        Map<String,List<ApplicationSummary>> applications= new HashMap<>();
         this.cloudFoundryProperties.getEndpoints()
                 .entrySet().parallelStream()
                 .forEach( entry -> {

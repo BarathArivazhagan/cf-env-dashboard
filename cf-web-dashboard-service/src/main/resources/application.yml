@@ -25,10 +25,6 @@ cf:
       - development
       - production
       - test
-    D2:
-    - name: barathpari-dev
-      spaces:
-      - development
   username: ${username}
   password: ${password}
 management:

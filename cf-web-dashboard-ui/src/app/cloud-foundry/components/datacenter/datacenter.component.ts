@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataCenterService } from '../../services/data-center.service';
-import { forkJoin } from "rxjs/observable/forkJoin";
+import { forkJoin } from "rxjs";
 import { ApplicationService } from '../../services/application.service';
 import { UserDefinedServiceInstancesService } from '../../services/user-defined-service-instances.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';

@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import io.jsonwebtoken.lang.Assert;
 import org.cloudfoundry.client.CloudFoundryClient;
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceRequest;
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.GetUserProvidedServiceInstanceResponse;
 import org.cloudfoundry.client.v2.userprovidedserviceinstances.UpdateUserProvidedServiceInstanceResponse;
-import org.cloudfoundry.client.v2.userprovidedserviceinstances.UserProvidedServiceInstances;
 import org.cloudfoundry.operations.CloudFoundryOperations;
 import org.cloudfoundry.operations.applications.ApplicationSummary;
 import org.cloudfoundry.operations.applications.RestageApplicationRequest;
@@ -21,7 +19,6 @@ import org.cloudfoundry.operations.services.CreateUserProvidedServiceInstanceReq
 import org.cloudfoundry.operations.services.GetServiceInstanceRequest;
 import org.cloudfoundry.operations.services.ServiceInstance;
 import org.cloudfoundry.operations.services.ServiceInstanceSummary;
-import org.cloudfoundry.operations.services.UpdateUserProvidedServiceInstanceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,7 @@ import com.barath.app.cloudfoundry.config.CloudFoundryProperties;
 import com.barath.app.cloudfoundry.factory.CloudFoundryContext;
 import com.barath.app.model.Organization;
 
+import io.jsonwebtoken.lang.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -58,8 +56,7 @@ public class CloudFoundryServiceImpl implements CloudFoundryService {
     @Override
     public Flux<ApplicationSummary> getAppsByDatacenter(String datacenter){
 
-        Flux<ApplicationSummary> applicationSummaryFlux = Flux.empty();
-        List<ApplicationSummary> apps = new ArrayList<>(3);
+        Flux<ApplicationSummary> applicationSummaryFlux = Flux.empty();      
         if( logger.isInfoEnabled()) { logger.info("get apps by datacenter {}",datacenter); }
         List<Organization> organizations = this.cloudFoundryProperties.getOrganizations().get(datacenter);
         if(organizations.isEmpty()) {
